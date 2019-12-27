@@ -1,6 +1,7 @@
 package wk.doraemon.io;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.List;
 
 /**
@@ -17,6 +18,8 @@ public class TextWriter {
 
     private static final String SEP = System.lineSeparator();
 
+    private Charset charset = null;
+
     public TextWriter(String path, boolean append) {
 
         file = new File(path).getAbsoluteFile();
@@ -28,7 +31,20 @@ public class TextWriter {
                 e.printStackTrace();
             }
         }
+    }
 
+    public TextWriter(String path, boolean append, Charset charset) {
+
+        file = new File(path).getAbsoluteFile();
+        this.charset = charset;
+        this.append = append;
+        if(!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public TextWriter(File f, boolean append){
@@ -42,16 +58,30 @@ public class TextWriter {
             }
         }
     }
+    public TextWriter(File f, boolean append, Charset charset){
+        this.append = append;
+        this.charset = charset;
+        file = f.getAbsoluteFile();
+        if(!file.exists()){
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     public TextWriter init(){
         try {
             fos = new FileOutputStream(file,append);
-            osw = new OutputStreamWriter(fos,"GBK");
+            if(this.charset!=null) {
+                osw = new OutputStreamWriter(fos, charset);
+            } else {
+                osw = new OutputStreamWriter(fos);
+            }
             bw = new BufferedWriter(osw);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return this;
-        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return this;
         }

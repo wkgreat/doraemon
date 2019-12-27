@@ -13,11 +13,15 @@ import java.util.ListIterator;
 public class TextReader {
 
     String path;
-    String code = "UTF-8";
+    String code = null;
     List<String> allRows = null;
     FileInputStream fis = null;
     InputStreamReader isr = null;
     BufferedReader br = null;
+
+    public TextReader(String path){
+        this.path=path;
+    }
 
     public TextReader(String path, String code){
         this.path=path;
@@ -27,7 +31,11 @@ public class TextReader {
     public TextReader init(){
         try {
             fis = new FileInputStream(this.path);
-            isr = new InputStreamReader(fis,code);
+            if(this.code==null) {
+                isr = new InputStreamReader(fis);
+            } else {
+                isr = new InputStreamReader(fis,code);
+            }
             br = new BufferedReader(isr);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -39,6 +47,15 @@ public class TextReader {
         }
 
         return this;
+    }
+
+    public String readLine() {
+        try {
+            return br.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -65,9 +82,9 @@ public class TextReader {
     /**
      * 获取第一行(如CSV表头)
      * */
-    public List<String> getHeader(){
+    public List<String> getHeader(String sep){
         if(null!=allRows){
-            return Arrays.asList(allRows.get(0).split(","));
+            return Arrays.asList(allRows.get(0).split(sep));
         } else
         {
             return null;
@@ -78,14 +95,14 @@ public class TextReader {
      * 获取CSV文件数据
      * #号开头的行不读（默认为注释行）
      * */
-    public List<List<String>> getRecords(){
+    public List<List<String>> getRecords(String sep){
         List<List<String>> records = new ArrayList<List<String>>();
         ListIterator iter = allRows.listIterator(1);
         String s;
         while(iter.hasNext()){
             s = (String) iter.next();
             if(s.startsWith("#")) continue; //wk: comment in csv execute with #
-            List<String> record = Arrays.asList(s.split(","));
+            List<String> record = Arrays.asList(s.split(sep));
             records.add(record);
         }
 
@@ -110,7 +127,7 @@ public class TextReader {
         TextReader reader = new TextReader("d:/wk/20170930_taixs.csv","GBK");
         reader.init();
         reader.readlines();
-        System.out.println(reader.getRecords());
+        System.out.println(reader.getRecords(","));
     }
 
 }
