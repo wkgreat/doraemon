@@ -1,10 +1,10 @@
 package wk.doraemon.geo;
 
-import com.vividsolutions.jts.algorithm.ConvexHull;
-import com.vividsolutions.jts.geom.*;
-import com.vividsolutions.jts.io.*;
-import com.vividsolutions.jts.geom.Point;
 import org.apache.commons.lang3.StringUtils;
+import org.locationtech.jts.algorithm.ConvexHull;
+import org.locationtech.jts.geom.*;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.io.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wk.doraemon.collection.ListUtil;
