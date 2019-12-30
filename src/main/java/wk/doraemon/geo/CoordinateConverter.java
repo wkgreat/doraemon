@@ -18,8 +18,7 @@ package wk.doraemon.geo;
    图吧MapBar地图API    图吧坐标
    高德MapABC地图API    火星坐标
    灵图51ditu地图API    火星坐标
- * 
- * @author fankun
+ *
  *
  */
 public class CoordinateConverter {

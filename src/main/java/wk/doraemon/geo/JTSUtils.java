@@ -5,6 +5,8 @@ import com.vividsolutions.jts.geom.*;
 import com.vividsolutions.jts.io.*;
 import com.vividsolutions.jts.geom.Point;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import wk.doraemon.collection.ListUtil;
 
 import java.io.Serializable;
@@ -16,6 +18,17 @@ import java.util.List;
  * JTS (JAVA Topology Suite) 封装
  */
 public class JTSUtils implements Serializable {
+
+    private final static Logger LOG = LoggerFactory.getLogger(JTSUtils.class);
+
+    public final static String POINT = "Point";
+    public final static String LINESTRING = "LineString";
+    public final static String POLYGON = "Polygon";
+    public final static String MULTIPOINT = "MultiPoint";
+    public final static String MULTILINESTRING = "MultiLineString";
+    public final static String MULTIPOLYGON = "MultiPolygon";
+    public final static String GEOMETRYCOLLECTION = "GeometryCollection";
+    public final static String LINEARRING = "LinearRing";
 
     /**
      * EPSG:4326 WGS-84坐标系几何构造工厂类
@@ -237,9 +250,49 @@ public class JTSUtils implements Serializable {
         }
     }
 
-    /**
-     * 获取线要素以米为单位的长度
-     * */
+    public static double getLengthInMeters(Geometry geometry) {
+        double d = 0;
+        String gtype = geometry.getGeometryType();
+        switch (gtype) {
+            case POINT:
+                LOG.warn("Calulate POINT Length as 0!");
+                d += 0;
+                break;
+            case LINESTRING:
+                d += getLengthInMeters((LineString) geometry);
+                break;
+            case POLYGON:
+                LOG.warn("Calulate POLYGON Length as 0!");
+                d += 0;
+                break;
+            case MULTIPOINT:
+                LOG.warn("Calulate MULTIPOINT Length as 0!");
+                d += 0;
+                break;
+            case MULTILINESTRING:
+                d += getLengthInMeters((MultiLineString) geometry);
+                break;
+            case MULTIPOLYGON:
+                LOG.warn("Calulate MULTIPOLYGON Length as 0!");
+                d += 0;
+                break;
+            case GEOMETRYCOLLECTION:
+                d += getLengthInMeters((GeometryCollection) geometry);
+                break;
+        }
+        return d;
+    }
+
+    public static double getLengthInMeters(GeometryCollection geometryCollection) {
+        int d = 0;
+        for(int i=0; i<geometryCollection.getNumGeometries(); ++i) {
+            Geometry g = geometryCollection.getGeometryN(i);
+            d+=getLengthInMeters(g);
+        }
+        return d;
+    }
+
+
     public static double getLengthInMeters(LineString lineString) {
         double distance = 0;
         Coordinate[] coords = lineString.getCoordinates();
@@ -252,12 +305,20 @@ public class JTSUtils implements Serializable {
         return distance;
     }
 
+    public static double getLengthInMeters(MultiLineString lineStrings) {
+        double length = 0;
+        for(int i=0; i<lineStrings.getNumGeometries(); i++) {
+            length += getLengthInMeters((LineString) lineStrings.getGeometryN(i));
+        }
+        return length;
+    }
+
     /**
      * 获取距离，单位米m
      * */
     public static double getDistance(Coordinate coord1, Coordinate coord2, int srid) {
         double d = 0;
-        if(srid==4326) {
+        if(srid==4326 || srid==0) {
             d = GeoUtils.WGS84.getDistance(coord1.y,coord1.x,coord2.y,coord2.x);
         } else {
             d = coord1.distance(coord2);
