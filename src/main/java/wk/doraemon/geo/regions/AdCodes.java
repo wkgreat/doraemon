@@ -1,5 +1,6 @@
 /**
  * Created by ke.wang7 on 2020/1/9.
+ * 中国行政区域编码
  */
 package wk.doraemon.geo.regions;
 
@@ -10,6 +11,10 @@ import java.util.*;
 
 public class AdCodes {
 
+    /**
+     * 获取每个省所有的城市的编码
+     * @return Map：key为中国每个省的中文名称，value为List对应每个省所有城市的编码，其中城市编码在List中是有序的
+     * */
     public static Map<String,List<String>> getProvinceCodeCityCodes() {
 
         InputStream is = AdCodes.class.getClassLoader().getResourceAsStream("adcodes.csv");
@@ -34,6 +39,10 @@ public class AdCodes {
         return pcMap2;
     }
 
+    /**
+     * 获取每个省所有的城市的编码
+     * @return Map：key为中国每个省的编码，value为List对应每个省所有城市的编码，其中城市编码在List中是有序的
+     * */
     public static Map<String,List<String>> getProvinceNameCityCodes() {
 
         InputStream is = AdCodes.class.getClassLoader().getResourceAsStream("adcodes.csv");
