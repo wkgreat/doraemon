@@ -15,7 +15,7 @@ public class TextReader {
     String path;
     String code = null;
     List<String> allRows = null;
-    FileInputStream fis = null;
+    InputStream fis = null;
     InputStreamReader isr = null;
     BufferedReader br = null;
 
@@ -28,9 +28,19 @@ public class TextReader {
         this.code=code;
     }
 
+    public TextReader(InputStream is) {
+        this.fis = is;
+    }
+    public TextReader(InputStream is, String code) {
+        this.fis = is;
+        this.code = code;
+    }
+
     public TextReader init(){
         try {
-            fis = new FileInputStream(this.path);
+            if(this.fis==null) {
+                fis = new FileInputStream(this.path);
+            }
             if(this.code==null) {
                 isr = new InputStreamReader(fis);
             } else {
