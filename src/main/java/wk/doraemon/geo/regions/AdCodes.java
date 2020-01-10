@@ -67,12 +67,4 @@ public class AdCodes {
         return pcMap2;
     }
 
-    public static void main(String[] args) {
-        Map<String,List<String>> pc = AdCodes.getProvinceNameCityCodes();
-        for(Map.Entry<String,List<String>> entry : pc.entrySet()) {
-            System.out.println("PROV: " + entry.getKey());
-            entry.getValue().forEach(System.out::println);
-        }
-    }
-
 }
