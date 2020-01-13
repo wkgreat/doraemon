@@ -56,11 +56,52 @@ public class GeoUtils implements Serializable {
 
     }
 
+    /**
+     * 角度平均值
+     * */
+    public static double meanAngle(double... anglesDeg) {
+        double x = 0.0;
+        double y = 0.0;
+
+        for (double angleD : anglesDeg) {
+            double angleR = Math.toRadians(angleD);
+            x += Math.cos(angleR);
+            y += Math.sin(angleR);
+        }
+        double avgR = Math.atan2(y / anglesDeg.length, x / anglesDeg.length);
+        return Math.toDegrees(avgR);
+    }
+
+    /**
+     * 角度标准差
+     * */
+    public static double stddevAngle(double... anglesDeg) {
+        double x = 0.0;
+        double y = 0.0;
+
+        for (double angleD : anglesDeg) {
+            double angleR = Math.toRadians(angleD);
+            x += Math.cos(angleR);
+            y += Math.sin(angleR);
+        }
+        y /= anglesDeg.length;
+        x /= anglesDeg.length;
+        double stddevR = Math.sqrt(-Math.log(y*y+x*x));
+        return Math.toDegrees(stddevR);
+    }
+
     public static void main(String[] args) {
-        double lat1 = 32.955582;
-        double lon1 = 117.339232;
-        double lat2 = 32.927565;
-        double lon2 = 117.347378;
+//        double lat1 = 32.955582;
+//        double lon1 = 117.339232;
+//        double lat2 = 32.927565;
+//        double lon2 = 117.347378;
+
+        double[] angles = {
+                90,91
+        };
+        System.out.println(meanAngle(angles));
+        System.out.println(stddevAngle(angles));
+
     }
 
 }
