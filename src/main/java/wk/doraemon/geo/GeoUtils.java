@@ -106,16 +106,19 @@ public class GeoUtils implements Serializable {
     }
 
     public static void main(String[] args) {
-//        double lat1 = 32.955582;
-//        double lon1 = 117.339232;
-//        double lat2 = 32.927565;
-//        double lon2 = 117.347378;
+        double lat1 = 36.0913;
+        double lon1 = 115.131545;
+        double lat2 = 36.20613;
+        double lon2 = 115.143785;
+        double d1 = GeoUtils.WGS84.getDistance(lat1,lon1, lat2,lon2,true);
+        double d2 = GeoUtils.WGS84.getDistance(lat1,lon1, lat2,lon2,false);
+        System.out.println(d1-d2);
 
-        GeoPoint start = new GeoPoint(115.845360, 33.256987);
-        GeoPoint end = new GeoPoint(116.074433, 33.290955);
-        GeoPoint p = new GeoPoint(116.301559, 33.160992);
-        GeoPoint k = GeoUtils.WGS84.closestPointToEdge(p,new GeoEdge(start,end),true);
-        System.out.println(k.lon+","+k.lat);
+//        GeoPoint start = new GeoPoint(115.845360, 33.256987);
+//        GeoPoint end = new GeoPoint(116.074433, 33.290955);
+//        GeoPoint p = new GeoPoint(116.301559, 33.160992);
+//        GeoPoint k = GeoUtils.WGS84.closestPointToEdge(p,new GeoEdge(start,end),true);
+//        System.out.println(k.lon+","+k.lat);
 
     }
 
