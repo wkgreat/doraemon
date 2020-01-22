@@ -31,12 +31,17 @@ public class ProjUtils implements Serializable {
         T4326T3857.transform(new ProjCoordinate(coord.x,coord.y),target);
         return new Coordinate(target.x,target.y);
     }
-
+    /**
+     * WGS84坐标系(EPSG:4326) -> 谷歌平面坐标系(EPSG:3857)
+     * */
     public static Coordinate wgs84_webMercator(double lon, double lat) {
         ProjCoordinate target = new ProjCoordinate();
         T4326T3857.transform(new ProjCoordinate(lon, lat),target);
         return new Coordinate(target.x,target.y);
     }
+    /**
+     * WGS84坐标系(EPSG:4326) -> 谷歌平面坐标系(EPSG:3857)
+     * */
     public static LineString wgs84_webMercator(LineString lineString) {
         Coordinate[] coords = lineString.getCoordinates();
         List<Coordinate> newCoords = new ArrayList<>();
@@ -55,11 +60,17 @@ public class ProjUtils implements Serializable {
         return new Coordinate(target.x,target.y);
     }
 
+    /**
+     * 谷歌平面坐标系(EPSG:3857) -> WGS84坐标系(EPSG:4326)
+     * */
     public static Coordinate webMercator_wgs84(double x, double y) {
         ProjCoordinate target = new ProjCoordinate();
         T3857T4326.transform(new ProjCoordinate(x, y),target);
         return new Coordinate(target.x,target.y);
     }
+    /**
+     * 谷歌平面坐标系(EPSG:3857) -> WGS84坐标系(EPSG:4326)
+     * */
     public static LineString webMercator_wgs84(LineString lineString) {
         Coordinate[] coords = lineString.getCoordinates();
         List<Coordinate> newCoords = new ArrayList<>();
