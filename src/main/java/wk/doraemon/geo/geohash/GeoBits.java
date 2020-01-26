@@ -23,6 +23,8 @@
  */
 package wk.doraemon.geo.geohash;
 
+import wk.doraemon.geo.JTSUtils;
+
 public class GeoBits {
 
     private final static String BASE32 = "0123456789bcdefghjkmnpqrstuvwxyz";
@@ -35,7 +37,7 @@ public class GeoBits {
      * */
     public static long geohashbits(double lon, double lat, int precision) {
         int latlen = precision / 2;
-        int lonlen = precision%2==0 ? latlen : latlen+1;
+        int lonlen = (precision+1) / 2;
         long lonBits = toBinary(-180.0, 180.0, lon, lonlen);
         long latBits = toBinary(-90.0, 90.0, lat, latlen);
         return composeBits(lonBits,latBits);
@@ -132,14 +134,11 @@ public class GeoBits {
     /**
      * geobits格子大小
      * [东西度数，南北度数]
+     * @param bitPrecision the bit length of geobits.
      * */
-    public static double[] cellsize(long geobits) {
-        long[] lonlatBits = splitGeobits(geobits);
-        return cellsize(lonlatBits[0],lonlatBits[1]);
-    }
-    public static double[] cellsize(long lonBits, long latBits) {
-        double lonInv = 360.0/Math.pow(2,getGeoBitsLength(lonBits));
-        double latInv = 180.0/Math.pow(2,getGeoBitsLength(latBits));
+    public static double[] cellsize(int bitPrecision) {
+        double lonInv = 360.0/Math.pow(2, bitPrecision/2.0);
+        double latInv = 180.0/Math.pow(2, (bitPrecision+1)/2.0);
         return new double[]{lonInv, latInv};
     }
 
@@ -220,7 +219,7 @@ public class GeoBits {
      * 获取西东南北与该geohash(geobits)相邻的geohash(geobits)
      * [west, east, south, north]
      * */
-    public static long[] neighbor(long geobits) {
+    public static long[] neighbor4(long geobits) {
 
         long[] splitedBits = splitGeobits(geobits);
         long lonBits = splitedBits[0];
@@ -239,7 +238,38 @@ public class GeoBits {
                 composeBits(southBits[0],southBits[1]),
                 composeBits(northBits[0],northBits[1])
         };
+    }
+    /**
+     * [NW N NE W E SW S SE]
+     * */
+    public static long[] neighbor8(long geobits) {
 
+        long[] splitedBits = splitGeobits(geobits);
+        long lonBits = splitedBits[0];
+        long latBits = splitedBits[1];
+        long lonMask = leftmostOne(lonBits);
+        long latMask = leftmostOne(latBits);
+
+        long[] westBits = toWest(lonBits, lonMask, latBits, latMask);
+        long[] eastBits = toEast(lonBits, lonMask, latBits, latMask);
+        long[] southBits = toSouth(lonBits, lonMask, latBits, latMask);
+        long[] northBits = toNorth(lonBits, lonMask, latBits, latMask);
+
+        long[] northWestBits = toWest(northBits[0], lonMask, northBits[1], latMask);
+        long[] northEastBits = toEast(northBits[0], lonMask, northBits[1], latMask);
+        long[] southWestBits = toWest(southBits[0], lonMask, southBits[1], latMask);
+        long[] southEastBits = toEast(southBits[0], lonMask, southBits[1], latMask);
+
+        return new long[] {
+                composeBits(northWestBits[0], northWestBits[1]),
+                composeBits(northBits[0],northBits[1]),
+                composeBits(northEastBits[0], northBits[1]),
+                composeBits(westBits[0],westBits[1]),
+                composeBits(eastBits[0],eastBits[1]),
+                composeBits(southWestBits[0],southWestBits[1]),
+                composeBits(southBits[0],southBits[1]),
+                composeBits(southEastBits[0],southEastBits[1])
+        };
     }
 
     /**
@@ -366,7 +396,7 @@ public class GeoBits {
      * 100101 ->
      * 100000
      * */
-    private static long leftmostOne(long bits) {
+    protected static long leftmostOne(long bits) {
         for(long newb = bits & (bits-1); newb > 0; newb = bits & (bits-1)) bits = newb;
         return bits;
     }
@@ -377,6 +407,12 @@ public class GeoBits {
     public static int getGeoBitsLength(long geobits) {
         long mask = leftmostOne(geobits);
         return (int) (Math.log(mask) / Math.log(2));
+    }
+
+    public static String showWKT(long geobits) {
+        double[] barriers = GeoBits.getGeoBitsBarrier(geobits);
+        String wkt = JTSUtils.geom2wkt(JTSUtils.createBox(barriers[0],barriers[1],barriers[2],barriers[3], 4326));
+        return wkt;
     }
 
     public static void main(String[] args) {
