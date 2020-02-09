@@ -12,7 +12,6 @@ import java.io.IOException;
  */
 public class HbaseHelper {
 
-
     private static void test() throws IOException {
 
         Configuration conf = HBaseConfiguration.create();
@@ -26,12 +25,5 @@ public class HbaseHelper {
         table.put(put);
 
     }
-
-    public static void main(String[] args) throws IOException {
-
-        test();
-
-    }
-
 
 }

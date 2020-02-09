@@ -124,6 +124,33 @@ public class JTSUtils implements Serializable {
         return getFactory(srid).createLineString(coordinates);
     }
 
+
+    /**
+     * @param left the left x
+     * @param right the right x
+     * @param down the down y
+     * @param upper the upper y
+     * @return the box polugon
+     *
+     *          upper
+     *         -------
+     *         |     |
+     *    left |     | right
+     *         |     |
+     *         -------
+     *          down
+     * */
+    public static Polygon createBox(double left, double right, double down, double upper, int srid) {
+        Coordinate[] coords = new Coordinate[] {
+                new Coordinate(left, down),
+                new Coordinate(left, upper),
+                new Coordinate(right, upper),
+                new Coordinate(right, down),
+                new Coordinate(left, down)
+        };
+        return getFactory(srid).createPolygon(coords);
+    }
+
     /**
      * 计算凸壳
      * @param coords 多个点的坐标列表
@@ -133,7 +160,6 @@ public class JTSUtils implements Serializable {
         MultiPoint points = getMultiPoint(coords);
         ConvexHull convexHull = new ConvexHull(points);
         Geometry hull = convexHull.getConvexHull();
-
         return hull;
     }
 
@@ -292,7 +318,6 @@ public class JTSUtils implements Serializable {
         return d;
     }
 
-
     public static double getLengthInMeters(LineString lineString) {
         double distance = 0;
         Coordinate[] coords = lineString.getCoordinates();
@@ -319,7 +344,7 @@ public class JTSUtils implements Serializable {
     public static double getDistance(Coordinate coord1, Coordinate coord2, int srid) {
         double d = 0;
         if(srid==4326 || srid==0) {
-            d = GeoUtils.WGS84.getDistance(coord1.y,coord1.x,coord2.y,coord2.x);
+            d = GeoUtils.WGS84.getDistance(coord1.y,coord1.x,coord2.y,coord2.x, true);
         } else {
             d = coord1.distance(coord2);
         }

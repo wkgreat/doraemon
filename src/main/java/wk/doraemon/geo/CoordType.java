@@ -1,4 +1,4 @@
-package com.sinovatio.tls.doraemon.geo;
+package wk.doraemon.geo;
 
 /**
  * 类CoordType.java的实现描述：坐标类型

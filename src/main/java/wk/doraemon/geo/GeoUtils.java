@@ -19,8 +19,13 @@ public class GeoUtils implements Serializable {
 
         /**
          * 两点距离及方位
+         * @param lon1 第一个点的经度
+         * @param lat1 第一个点的纬度
+         * @param lon2 第二个点的经度
+         * @param lat2 第二个点的纬度
+         *
          * */
-        public static GeodeticCurve geodesicInverse(double lat1, double lon1, double lat2, double lon2){
+        public static GeodeticCurve geodesicInverse(double lon1, double lat1, double lon2, double lat2){
             return GEODETIC.calculateGeodeticCurve(
                     Ellipsoid.WGS84,
                     new GlobalCoordinates(lat1, lon1),
@@ -29,52 +34,85 @@ public class GeoUtils implements Serializable {
 
         /**
          * 两点距离 Haversine公式
+         * @param lon1 第一个点的经度
+         * @param lat1 第一个点的纬度
+         * @param lon2 第二个点的经度
+         * @param lat2 第二个点的纬度
+         * @return  两个点的Haversine距离
          * */
-        public static double getDistance(double lat1, double lon1, double lat2, double lon2) {
+        public static double getDistance(double lon1, double lat1, double lon2, double lat2) {
             return distanceHaversine(lat1, lon1, lat2, lon2);
         }
 
         /**
          * 两点距离
+         * @param lon1 第一个点的经度
+         * @param lat1 第一个点的纬度
+         * @param lon2 第二个点的经度
+         * @param lat2 第二个点的纬度
          * @param useSpheroid 距离计算方式，是否使用WGS84椭球体
          *                    true 使用WGS84椭球体，更精确
          *                    false Haversine公式，更快速
+         * @return 两个点的距离
          * */
-        public static double getDistance(double lat1, double lon1, double lat2, double lon2, boolean useSpheroid) {
+        public static double getDistance(double lon1, double lat1, double lon2, double lat2, boolean useSpheroid) {
             if(useSpheroid) return distanceSpheroid(lat1, lon1, lat2, lon2);
             else return distanceHaversine(lat1, lon1, lat2, lon2);
         }
 
         /**
          * 方位角
+         * @param lon1 第一个点的经度
+         * @param lat1 第一个点的纬度
+         * @param lon2 第二个点的经度
+         * @param lat2 第二个点的纬度
+         * @return 从第一个点到第二个点的方位角
          * */
-        public static double getAzimuth(double lat1, double lon1, double lat2, double lon2) {
+        public static double getAzimuth(double lon1, double lat1, double lon2, double lat2) {
             return geodesicInverse(lat1, lon1, lat2, lon2).getAzimuth();
         }
 
         /**
+         * 某点沿某方向移动一定距离的位置
+         * @param lat 纬度 degree
+         * @param lon 经度 degree
+         * @param bearing 方位角 degree
+         * @param distance 距离 meter
+         * @return [lon, lat]
+         * */
+        public static double[] moveInDirection(double lon, double lat, double bearing, double distance) {
+            return Geodesic.moveInDirection(lon, lat, bearing, distance);
+        }
+
+        /**
          * 点到线段的最近点(类似垂足)
+         * @param point 点
+         * @param edge 线段
          * @param onEdge 是否考虑延长线的情况
          *               true 必须返回线段上的点，所以如果垂足在延长线上，则返回（垂足，线段起点，线段终点）中的最近点
          *               false 直接返回垂足，即使其在线段延长线上
          * */
-        public static GeoPoint closestPointToEdge(GeoPoint p, GeoEdge e, boolean onEdge){
-            return toDegree(Geodesic.closestPointToEdge(toRadian(p), toRadian(e), onEdge));
+        public static GeoPoint closestPointToEdge(GeoPoint point, GeoEdge edge, boolean onEdge){
+            return toDegree(Geodesic.closestPointToEdge(toRadian(point), toRadian(edge), onEdge));
         }
 
         /**
          * 点到线段的距离
+         * @param point 点
+         * @param edge 线段
          * @param onEdge 是否考虑延长线的情况
          *               true 返回点到（垂足，线段起点，线段终点）距离中的最小值
          *               false 直接返回点到垂足的距离，即使其在线段延长线上
          * */
-        public static double getDistancePointToEdge(GeoPoint p, GeoEdge e, boolean onEdge) {
-            GeoPoint cp = closestPointToEdge(p, e, onEdge);
-            return getDistance(p.lat,p.lon,cp.lat,cp.lon, false);
+        public static double getDistancePointToEdge(GeoPoint point, GeoEdge edge, boolean onEdge) {
+            GeoPoint cp = closestPointToEdge(point, edge, onEdge);
+            return getDistance(point.lat,point.lon,cp.lat,cp.lon, false);
         }
 
         /**
          * 点到线段的距离
+         * @param point 点
+         * @param edge 线段
          * @param onEdge 是否考虑延长线的情况
          *               true 返回点到（垂足，线段起点，线段终点）距离中的最小值
          *               false 直接返回点到垂足的距离，即使其在线段延长线上
@@ -83,22 +121,24 @@ public class GeoUtils implements Serializable {
          *                    false Haversine公式，更快速
          *
          * */
-        public static double getDistancePointToEdge(GeoPoint p, GeoEdge e, boolean onEdge, boolean useSpheroid) {
-            GeoPoint cp = closestPointToEdge(p, e, onEdge);
-            return getDistance(p.lat,p.lon,cp.lat,cp.lon, useSpheroid);
+        public static double getDistancePointToEdge(GeoPoint point, GeoEdge edge, boolean onEdge, boolean useSpheroid) {
+            GeoPoint cp = closestPointToEdge(point, edge, onEdge);
+            return getDistance(point.lat,point.lon,cp.lat,cp.lon, useSpheroid);
         }
 
         /**
          * 角度平均值
+         * @param anglesDeg serveral angles in degree
          * */
-        static double meanAngle(double... anglesDeg) {
+        public static double meanAngle(double... anglesDeg) {
             return Geodesic.meanAngle(anglesDeg);
         }
 
         /**
          * 角度标准差
+         @param anglesDeg serveral angles in degree
          * */
-        static double stddevAngle(double... anglesDeg) {
+        public static double stddevAngle(double... anglesDeg) {
             return Geodesic.stddevAngle(anglesDeg);
         }
 
@@ -106,16 +146,19 @@ public class GeoUtils implements Serializable {
     }
 
     public static void main(String[] args) {
-//        double lat1 = 32.955582;
-//        double lon1 = 117.339232;
-//        double lat2 = 32.927565;
-//        double lon2 = 117.347378;
+        double lat1 = 36.0913;
+        double lon1 = 115.131545;
+        double lat2 = 36.20613;
+        double lon2 = 115.143785;
+        double d1 = GeoUtils.WGS84.getDistance(lon1, lat1, lon2, lat2,true);
+        double d2 = GeoUtils.WGS84.getDistance(lon1 ,lat1, lon2 ,lat2,false);
+        System.out.println(d1-d2);
 
-        GeoPoint start = new GeoPoint(115.845360, 33.256987);
-        GeoPoint end = new GeoPoint(116.074433, 33.290955);
-        GeoPoint p = new GeoPoint(116.301559, 33.160992);
-        GeoPoint k = GeoUtils.WGS84.closestPointToEdge(p,new GeoEdge(start,end),true);
-        System.out.println(k.lon+","+k.lat);
+//        GeoPoint start = new GeoPoint(115.845360, 33.256987);
+//        GeoPoint end = new GeoPoint(116.074433, 33.290955);
+//        GeoPoint p = new GeoPoint(116.301559, 33.160992);
+//        GeoPoint k = GeoUtils.WGS84.closestPointToEdge(p,new GeoEdge(start,end),true);
+//        System.out.println(k.lon+","+k.lat);
 
     }
 
