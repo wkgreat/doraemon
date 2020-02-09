@@ -23,7 +23,16 @@
  */
 package wk.doraemon.geo.geohash;
 
+import wk.doraemon.geo.GeoUtils;
 import wk.doraemon.geo.JTSUtils;
+
+import java.util.ArrayDeque;
+import java.util.HashSet;
+import java.util.Queue;
+import java.util.Set;
+
+import static java.lang.Math.abs;
+import static java.lang.Math.min;
 
 public class GeoBits {
 
@@ -270,6 +279,44 @@ public class GeoBits {
                 composeBits(southBits[0],southBits[1]),
                 composeBits(southEastBits[0],southEastBits[1])
         };
+    }
+
+    public static Set<Long> expandByRadius(long geobits, double radius) {
+        double[] barrier = getGeoBitsBarrier(geobits); //[west, east, south, north]
+        double minLat = abs(barrier[2])<abs(barrier[3]) ? barrier[2] : barrier[3];
+        double[] rWest = GeoUtils.WGS84.moveInDirection(
+                barrier[0],minLat,270, radius);
+        double[] rEast = GeoUtils.WGS84.moveInDirection(
+                barrier[1],minLat,90, radius);
+        double[] rSouth = GeoUtils.WGS84.moveInDirection(
+                barrier[0],barrier[2],180,radius);
+        double[] rNorth = GeoUtils.WGS84.moveInDirection(
+                barrier[0],barrier[3],0,radius);
+        return expandGeohashes(rWest[0],rEast[0],rSouth[1],rNorth[1], getGeoBitsLength(geobits));
+
+    }
+
+    public static Set<Long> expandGeohashes(double west, double east, double south, double north, int bitPrecision) {
+
+        Set<Long> geobits = new HashSet<>();
+        Queue<Long> cache = new ArrayDeque<>();
+        long wsBits = GeoBits.geohashbits(west, south, bitPrecision);
+        cache.add(wsBits);
+        while (!cache.isEmpty()) {
+            long theBits = cache.poll();
+            if(!geobits.contains(theBits) && intersect(west,east,south,north,theBits)) {
+                geobits.add(theBits);
+                for(long n : GeoBits.neighbor8(theBits)) {
+                    cache.add(n);
+                }
+            }
+        }
+        return geobits;
+    }
+
+    private static boolean intersect(double west, double east, double south, double north, long geobits) {
+        double[] barriers = GeoBits.getGeoBitsBarrier(geobits); //west east south north
+        return !(barriers[0] > east || barriers[1] < west || barriers[2] > north || barriers[3] < south);
     }
 
     /**

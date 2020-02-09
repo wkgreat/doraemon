@@ -21,7 +21,7 @@ public class GeohashBoxIndexTest {
         GeoHashBoxIndex index = new GeoHashBoxIndex(left,right,down,upper);
         Polygon box = JTSUtils.createBox(left,right,down,upper,4326);
         System.out.println(JTSUtils.geom2wkt(box));
-        Set<Long> allGeobits = index.allGeobits;
+        Set<Long> allGeobits = index.getAllGeobits();
         allGeobits.forEach(g-> System.out.println(GeoBits.showWKT(g)));
 
     }
