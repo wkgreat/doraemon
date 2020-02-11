@@ -51,6 +51,14 @@
         </repository>
     </repositories>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>doraemon</name>
+            <url>https://maven.pkg.github.com/wkgreat/doraemon</url>
+        </repository>
+    </distributionManagement>
+
     <dependencies>
 
         <dependency>
