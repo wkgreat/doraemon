@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>wk</groupId>
+    <groupId>wkgreat</groupId>
     <artifactId>doraemon</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
     <name>doraemon</name>
     <description>Doraemon's Pocket. YAO-NI-MING-3000. Handy tools for JAVA.</description>
@@ -58,6 +58,7 @@
             <url>https://maven.pkg.github.com/wkgreat/doraemon</url>
         </repository>
     </distributionManagement>
+
 
     <dependencies>
 
