@@ -201,6 +201,10 @@ public class JTSUtils implements Serializable {
         return getLineString(Arrays.asList(geometry.getCoordinates()),geometry.getSRID());
     }
 
+    public static MultiPoint lineString2MultiPoint(Geometry geometry) {
+        return getMultiPoint(Arrays.asList(geometry.getCoordinates()));
+    }
+
     /**
      * 获取几何要素的WKT
      * */

@@ -1,11 +1,7 @@
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.Polygon;
-import wk.doraemon.geo.JTSUtils;
-import wk.doraemon.io.TextReader;
+package wk.doraemon.io;/*
+ */
 
-import java.math.BigInteger;
-
-public class JTSUtilsTest {
+public class Bits {
 
     public static byte[] hexStringToByteArray(String s) {
         int len = s.length();
@@ -17,8 +13,4 @@ public class JTSUtilsTest {
         return data;
     }
 
-    public static void main(String[] args) {
-
-
-    }
 }
