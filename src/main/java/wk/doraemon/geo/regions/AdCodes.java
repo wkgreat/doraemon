@@ -9,6 +9,7 @@ import wk.doraemon.io.TextReader;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class AdCodes implements Serializable {
 
@@ -22,6 +23,20 @@ public class AdCodes implements Serializable {
         reader.readlines();
         records = reader.getRecords(",");
         reader.close();
+    }
+
+    public List<DistrictDO> getDistricts() {
+        return records.stream().map(r->{
+            DistrictDO district = new DistrictDO();
+            district.setProv_id(r.get(0));
+            district.setProv_name(r.get(1));
+            district.setCity_id(r.get(2));
+            district.setCity_name(r.get(3));
+            district.setDistrict_id(r.get(4));
+            district.setDistrict_name(r.get(5));
+            district.setPhone_code(r.get(6));
+            return district;
+        }).collect(Collectors.toList());
     }
 
     /**

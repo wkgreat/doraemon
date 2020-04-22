@@ -43,7 +43,7 @@ public class JTSUtils implements Serializable {
     /**
      * 按照srid 获取对应坐标系的几何构造工厂类
      * */
-    private static GeometryFactory getFactory(int srid) {
+    public static GeometryFactory getFactory(int srid) {
         return new GeometryFactory(new PrecisionModel(),srid);
     }
 
@@ -122,6 +122,26 @@ public class JTSUtils implements Serializable {
         Coordinate[] coordinates = new Coordinate[theLength];
         coordinates = coords.toArray(coordinates);
         return getFactory(srid).createLineString(coordinates);
+    }
+
+    public static Polygon getPolygon(List<Coordinate> coords, int srid) {
+        int theLength = coords.size();
+        Coordinate[] coordinates = new Coordinate[theLength];
+        coordinates = coords.toArray(coordinates);
+        return getFactory(srid).createPolygon(coordinates);
+    }
+    public static Polygon getPolygon(Coordinate[] coords, int srid) {
+        return getFactory(srid).createPolygon(coords);
+    }
+
+    public static MultiPolygon getMultiPolygon(List<Polygon> polygons, int srid) {
+        int len = polygons.size();
+        Polygon[] polygons1 = new Polygon[len];
+        polygons1 = polygons.toArray(polygons1);
+        return getFactory(srid).createMultiPolygon(polygons1);
+    }
+    public static MultiPolygon getMultiPolygon(Polygon[] polygons, int srid) {
+        return getFactory(srid).createMultiPolygon(polygons);
     }
 
 
