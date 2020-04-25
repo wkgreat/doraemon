@@ -456,6 +456,22 @@ public class GeoBits {
         return (int) (Math.log(mask) / Math.log(2));
     }
 
+    /**
+     * geobtis cell to wkt
+     * */
+    public static String toWKT(long geobits) {
+        double[] barriers = GeoBits.getGeoBitsBarrier(geobits);
+        return JTSUtils.geom2wkt(JTSUtils.createBox(barriers[0],barriers[1],barriers[2],barriers[3], 4326));
+    }
+
+    /**
+     * geobtis cell to wkt
+     * */
+    public static byte[] toWKB(long geobits) {
+        double[] barriers = GeoBits.getGeoBitsBarrier(geobits);
+        return JTSUtils.geom2wkb(JTSUtils.createBox(barriers[0],barriers[1],barriers[2],barriers[3], 4326));
+    }
+
     public static String showWKT(long geobits) {
         double[] barriers = GeoBits.getGeoBitsBarrier(geobits);
         String wkt = JTSUtils.geom2wkt(JTSUtils.createBox(barriers[0],barriers[1],barriers[2],barriers[3], 4326));
