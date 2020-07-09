@@ -368,7 +368,7 @@ public class JTSUtils implements Serializable {
     public static double getDistance(Coordinate coord1, Coordinate coord2, int srid) {
         double d = 0;
         if(srid==4326 || srid==0) {
-            d = GeoUtils.WGS84.getDistance(coord1.y,coord1.x,coord2.y,coord2.x, true);
+            d = GeoUtils.WGS84.getDistance(coord1.y,coord1.x,coord2.y,coord2.x, false);
         } else {
             d = coord1.distance(coord2);
         }
