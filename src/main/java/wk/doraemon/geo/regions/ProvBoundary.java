@@ -35,6 +35,7 @@ public class ProvBoundary implements Serializable {
 
     public ProvBoundary(String path) {
         provBoundarySHPPath = path;
+        getProvGeometries();
     }
 
     /**

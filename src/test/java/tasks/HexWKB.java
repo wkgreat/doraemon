@@ -16,9 +16,9 @@ public class HexWKB {
 
     public static void main(String[] args) {
 
-        TextReader reader = new TextReader("/Users/wkgreat/codes/amh/ymm-data-analysis/output_data/皖L92931.txt");
+        TextReader reader = new TextReader("/Users/wkgreat/codes/amh/ymm-old-driver-spark/outputData/track_sichuan_jiangsu.txt");
         reader.init();
-        TextWriter textWriter = new TextWriter("/Users/wkgreat/codes/amh/ymm-data-analysis/output_data/皖L92931_wkt.txt",false).init();
+        TextWriter textWriter = new TextWriter("/Users/wkgreat/codes/amh/ymm-old-driver-spark/outputData/track_sichuan_jiangsu_wkt.txt",false).init();
         for(String line : reader.readlines()) {
             byte[] wkb = Bits.hexStringToByteArray(line);
             LineString geom = (LineString) JTSUtils.wkb2geom(wkb);
