@@ -15,11 +15,12 @@ import wk.doraemon.geo.JTSUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ProvBoundary {
+public class ProvBoundary implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(ProvBoundary.class);
 
