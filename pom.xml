@@ -6,7 +6,7 @@
 
     <groupId>wkgreat</groupId>
     <artifactId>doraemon</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
     <name>doraemon</name>
     <description>Doraemon's Pocket. YAO-NI-MING-3000. Handy tools for JAVA.</description>
