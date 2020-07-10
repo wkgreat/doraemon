@@ -16,8 +16,7 @@ import wk.doraemon.geo.JTSUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ProvBoundary implements Serializable {
@@ -31,7 +30,7 @@ public class ProvBoundary implements Serializable {
     /**
      * 各市的polygon几何对象
      * */
-    private Map<String, Geometry> provGeometries = null;
+    public Map<String, Geometry> provGeometries = null;
 
     public ProvBoundary(String path) {
         provBoundarySHPPath = path;
@@ -71,7 +70,6 @@ public class ProvBoundary implements Serializable {
                                 Geometry geometry = (Geometry) feature.getDefaultGeometry();
                                 geometry.setSRID(4326);
                                 provGeometries.put(citycode,geometry);
-                                System.out.println(citycode);
                                 //System.out.println(JTSUtils.geom2wkt(geometry));
                             }
 
@@ -112,6 +110,19 @@ public class ProvBoundary implements Serializable {
             d += entry.getValue();
         }
         return d;
+    }
+
+    public static void main(String[] args) {
+
+        ProvBoundary pb = new ProvBoundary("/Users/wkgreat/codes/amh/ymm-etc-price/java/etc-price/src/main/resources/data/china_ad_boundary_WGS1984/prov_boundary_simple.shp");
+        Set<String> provsSet = pb.provGeometries.keySet();
+        List<String> provsList = new ArrayList<>(provsSet);
+        Collections.sort(provsList);
+
+        for(String s : provsList) {
+            System.out.println(s);
+        }
+
     }
 
 }
