@@ -11,6 +11,10 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @deprecated
+ * */
+@Deprecated
 public class AdCodes implements Serializable {
 
     private List<List<String>> records;

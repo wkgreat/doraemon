@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
+ * List列表工具类
  * Created by TF on 2018/11/25.
  */
 public class ListUtil {

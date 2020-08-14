@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
+ * Map工具类
  * Created by TF on 2019/1/4.
  */
 public class MapUtils {

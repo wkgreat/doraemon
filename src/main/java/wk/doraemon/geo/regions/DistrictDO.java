@@ -7,6 +7,10 @@ import org.locationtech.jts.geom.Geometry;
 
 import java.util.Arrays;
 
+/**
+ * @deprecated
+ * */
+@Deprecated
 @Getter
 @Setter
 public class DistrictDO {

@@ -1,11 +1,12 @@
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.Polygon;
-import wk.doraemon.geo.JTSUtils;
-import wk.doraemon.io.TextReader;
+import org.junit.Test;
+import junit.framework.TestCase;
 
-import java.math.BigInteger;
+public class JTSUtilsTest extends TestCase {
 
-public class JTSUtilsTest {
+    @Test
+    public void test() {
+
+    }
 
     public static byte[] hexStringToByteArray(String s) {
         int len = s.length();
@@ -15,10 +16,5 @@ public class JTSUtilsTest {
                     + Character.digit(s.charAt(i+1), 16));
         }
         return data;
-    }
-
-    public static void main(String[] args) {
-
-
     }
 }

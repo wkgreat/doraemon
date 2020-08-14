@@ -24,6 +24,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @deprecated
+ * */
+@Deprecated
 public class CityBoudary implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(CityBoudary.class);

@@ -1,13 +1,10 @@
 
+import junit.framework.TestCase;
 import org.junit.Test;
 import wk.doraemon.geo.geohash.GeoBits;
 import wk.doraemon.geo.geohash.GeoHash;
 
-public class GeohashTest {
-
-    public static void main(String[] args) {
-        test1();
-    }
+public class GeohashTest extends TestCase {
 
     @Test
     public static void test1() {

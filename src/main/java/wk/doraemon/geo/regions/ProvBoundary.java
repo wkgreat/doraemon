@@ -6,6 +6,7 @@ import org.geotools.data.FeatureSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -19,6 +20,10 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @deprecated
+ * */
+@Deprecated
 public class ProvBoundary implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(ProvBoundary.class);
@@ -112,9 +117,30 @@ public class ProvBoundary implements Serializable {
         return d;
     }
 
-    public static void main(String[] args) {
+    /**
+     * which province the point belongs
+     * @param lon Double longitude
+     * @param lat Double latitude
+     * @return the code of province
+     * */
+    public String locateProvince(double lon, double lat) {
+        Point point = JTSUtils.getPoint(lon, lat, 4326);
+        String code = null;
+        for(Map.Entry<String, Geometry> entry : getProvGeometries().entrySet()) {
+            Geometry region = entry.getValue();
+            if(point.intersects(region)) {
+                code = entry.getKey();
+                System.out.println(JTSUtils.geom2wkt(region));
+                break;
+            }
+        }
+        return code;
+    }
 
-        ProvBoundary pb = new ProvBoundary("/Users/wkgreat/codes/amh/ymm-etc-price/java/etc-price/src/main/resources/data/china_ad_boundary_WGS1984/prov_boundary_simple.shp");
+    public static void main(String[] args) {
+        String path = "/Users/wkgreat/codes/projects/doraemon/src/main/resources/china_ad_boundary_WGS1984/prov_boundary_simple.shp";
+        System.out.println(path);
+        ProvBoundary pb = new ProvBoundary(path);
         Set<String> provsSet = pb.provGeometries.keySet();
         List<String> provsList = new ArrayList<>(provsSet);
         Collections.sort(provsList);
@@ -122,6 +148,9 @@ public class ProvBoundary implements Serializable {
         for(String s : provsList) {
             System.out.println(s);
         }
+
+        String code = pb.locateProvince(109.41734671, 27.32323925);
+        System.out.println(code);
 
     }
 
