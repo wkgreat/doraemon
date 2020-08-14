@@ -24,8 +24,15 @@
         <geotools.version>21.1</geotools.version>
         <jts.version>1.16.0</jts.version>
         <proj.version>0.1.0</proj.version>
-
     </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>github-wkgreat</id>
+            <name>github-wkgreat-mvn-repo</name>
+            <url>https://maven.pkg.github.com/wkgreat/mvn-repo</url>
+        </repository>
+    </distributionManagement>
 
     <repositories>
         <repository>
