@@ -6,11 +6,11 @@ import wk.doraemon.geo.beans.GeoPoint;
 import wk.doraemon.geo.beans.Point;
 
 import static java.lang.Math.*;
-import static java.lang.Math.asin;
 import static wk.doraemon.geo.GeoUtils.WGS84.geodesicInverse;
 
 /**
  * 借鉴自PostGIS源码 lwgeodetic.c
+ * WGS84地理坐标系下，各种几何计算
  * */
 public class Geodesic {
 
@@ -48,7 +48,7 @@ public class Geodesic {
      *      true，直接返回垂足
      *      false返回（垂足，线段起点，线段终点）中的最近点
      * */
-    static GeoPoint closestPointToEdge(GeoPoint gp, GeoEdge e, boolean onedge) {
+    public static GeoPoint closestPointToEdge(GeoPoint gp, GeoEdge e, boolean onedge) {
         double d1 = 1000000000.0, d2, d3, d_nearest;
         Point n, p, k;
         GeoPoint gk, g_nearest;
@@ -233,7 +233,7 @@ public class Geodesic {
      * Given two points on a unit sphere, calculate their distance apart in radians.
      * Unit Sphere
      */
-    static double sphere_distance(GeoPoint s, GeoPoint e)
+    public static double sphere_distance(GeoPoint s, GeoPoint e)
     {
         double d_lon = e.lon - s.lon;
         double cos_d_lon = cos(d_lon);
@@ -253,7 +253,7 @@ public class Geodesic {
      * 使用Haversine公式计算距离
      * 输入为角度
      * */
-    static double distanceHaversine(double lat1, double lon1, double lat2, double lon2) {
+    public static double distanceHaversine(double lat1, double lon1, double lat2, double lon2) {
         int earthR = 6371000;
         double x = Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.cos((lon1 - lon2) * Math.PI / 180);
         double y = sin(lat1 * Math.PI / 180) * sin(lat2 * Math.PI / 180);
@@ -268,7 +268,7 @@ public class Geodesic {
      * @FIXEME 引用了org.gavaghan.geodesy库，但是里面封装了好多对象，可能会提高内存使用量
      * 输入为角度
      * */
-    static double distanceSpheroid(double lat1, double lon1, double lat2, double lon2) {
+    public static double distanceSpheroid(double lat1, double lon1, double lat2, double lon2) {
         return geodesicInverse(lat1, lon1, lat2, lon2).getEllipsoidalDistance();
     }
 
@@ -281,7 +281,7 @@ public class Geodesic {
      *
      * @return [lon, lat]
      */
-    static double[] moveInDirection(double lon, double lat, double bearingInDegrees, double distanceInMeters) {
+    public static double[] moveInDirection(double lon, double lat, double bearingInDegrees, double distanceInMeters) {
 
         if (bearingInDegrees < 0 || bearingInDegrees > 360) {
             throw new IllegalArgumentException("direction must be in (0,360)");
@@ -337,7 +337,7 @@ public class Geodesic {
     /**
      * 角度平均值
      * */
-    static double meanAngle(double... anglesDeg) {
+    public static double meanAngle(double... anglesDeg) {
         double x = 0.0;
         double y = 0.0;
 
@@ -353,7 +353,7 @@ public class Geodesic {
     /**
      * 角度标准差
      * */
-    static double stddevAngle(double... anglesDeg) {
+    public static double stddevAngle(double... anglesDeg) {
         double x = 0.0;
         double y = 0.0;
 
