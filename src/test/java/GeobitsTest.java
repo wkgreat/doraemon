@@ -1,10 +1,13 @@
+import junit.framework.TestCase;
+import org.junit.Test;
 import wk.doraemon.geo.geohash.GeoBits;
 
 import java.util.Set;
 
-public class GeobitsTest {
+public class GeobitsTest extends TestCase {
 
-    public static void main(String[] args) {
+    @Test
+    public void test() {
 
         long geobits = GeoBits.geohashbits(117,32,30);
         System.out.println(geobits);

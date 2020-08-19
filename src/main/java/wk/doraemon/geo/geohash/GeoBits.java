@@ -1,3 +1,15 @@
+package wk.doraemon.geo.geohash;
+
+import wk.doraemon.geo.GeoUtils;
+import wk.doraemon.geo.JTSUtils;
+
+import java.util.ArrayDeque;
+import java.util.HashSet;
+import java.util.Queue;
+import java.util.Set;
+
+import static java.lang.Math.abs;
+
 /**
  * Created by ke.wang7 on 2020/1/19.
  * @author ke Wang
@@ -21,19 +33,6 @@
  *  而加了lead1 为 1001 这样前面的两个零，再以long型存储是就不会去除掉
  *
  */
-package wk.doraemon.geo.geohash;
-
-import wk.doraemon.geo.GeoUtils;
-import wk.doraemon.geo.JTSUtils;
-
-import java.util.ArrayDeque;
-import java.util.HashSet;
-import java.util.Queue;
-import java.util.Set;
-
-import static java.lang.Math.abs;
-import static java.lang.Math.min;
-
 public class GeoBits {
 
     private final static String BASE32 = "0123456789bcdefghjkmnpqrstuvwxyz";

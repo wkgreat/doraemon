@@ -11,6 +11,9 @@ import java.io.Serializable;
 
 import static wk.doraemon.geo.Geodesic.*;
 
+/**
+ * 地理空间几何计算（距离，角度等）
+ * */
 public class GeoUtils implements Serializable {
 
     private final static GeodeticCalculator GEODETIC = new GeodeticCalculator();
@@ -128,7 +131,8 @@ public class GeoUtils implements Serializable {
 
         /**
          * 角度平均值
-         * @param anglesDeg serveral angles in degree
+         * @param anglesDeg several angles in degree
+         * @return average of angles
          * */
         public static double meanAngle(double... anglesDeg) {
             return Geodesic.meanAngle(anglesDeg);
@@ -136,7 +140,8 @@ public class GeoUtils implements Serializable {
 
         /**
          * 角度标准差
-         @param anglesDeg serveral angles in degree
+         * @param anglesDeg several angles in degree
+         * @return standard deviation of angles
          * */
         public static double stddevAngle(double... anglesDeg) {
             return Geodesic.stddevAngle(anglesDeg);
@@ -144,24 +149,6 @@ public class GeoUtils implements Serializable {
 
 
     }
-
-    public static void main(String[] args) {
-        double lat1 = 36.0913;
-        double lon1 = 115.131545;
-        double lat2 = 36.20613;
-        double lon2 = 115.143785;
-        double d1 = GeoUtils.WGS84.getDistance(lon1, lat1, lon2, lat2,true);
-        double d2 = GeoUtils.WGS84.getDistance(lon1 ,lat1, lon2 ,lat2,false);
-        System.out.println(d1-d2);
-
-//        GeoPoint start = new GeoPoint(115.845360, 33.256987);
-//        GeoPoint end = new GeoPoint(116.074433, 33.290955);
-//        GeoPoint p = new GeoPoint(116.301559, 33.160992);
-//        GeoPoint k = GeoUtils.WGS84.closestPointToEdge(p,new GeoEdge(start,end),true);
-//        System.out.println(k.lon+","+k.lat);
-
-    }
-
 }
 
 

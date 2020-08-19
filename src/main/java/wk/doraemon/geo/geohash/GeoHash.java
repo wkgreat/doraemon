@@ -1,5 +1,9 @@
 package wk.doraemon.geo.geohash;
 
+/**
+ * GeoHash 工具类
+ * @author wkgreat
+ * */
 public class GeoHash {
 
     public static String getGeoHash(double lon, double lat, int charPrecision) {

@@ -91,12 +91,4 @@ public class GeoHashCircleIndex implements Serializable {
         return GeoHashBoxIndex.fittingPrecision(left,right,down,upper);
     }
 
-    public static void main(String[] args) {
-
-        GeoHashCircleIndex index = GeoHashCircleIndex.build(117,32,1000,30);
-        System.out.println(index.getBoxIndex().getAllGeobits());
-
-
-    }
-
 }
