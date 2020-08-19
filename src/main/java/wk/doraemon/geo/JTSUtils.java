@@ -230,7 +230,7 @@ public class JTSUtils implements Serializable {
      * */
     public static String geom2wkt(Geometry geometry) {
         if(geometry==null || geometry.isEmpty()) {
-            return "NULL";
+            return "";
         } else {
             return new WKTWriter().write(geometry);
         }
