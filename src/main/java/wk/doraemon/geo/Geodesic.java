@@ -11,6 +11,7 @@ import static wk.doraemon.geo.GeoUtils.WGS84.geodesicInverse;
 /**
  * 借鉴自PostGIS源码 lwgeodetic.c
  * WGS84地理坐标系下，各种几何计算
+ * @author wangke
  * */
 public class Geodesic {
 

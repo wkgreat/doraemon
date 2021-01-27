@@ -1,7 +1,5 @@
 import junit.framework.TestCase;
-import org.geotools.referencing.GeodeticCalculator;
-import org.locationtech.jts.geom.Point;
-import wk.doraemon.geo.JTSUtils;
+import wk.doraemon.geo.Geodesic;
 
 import java.text.ParseException;
 
@@ -13,11 +11,13 @@ public class Test extends TestCase {
 
     public void test1() throws ParseException {
 
-        GeodeticCalculator gc = new GeodeticCalculator();
-        gc.getOrthodromicDistance();
+        double d = Geodesic.distanceSpheroid(32,117,32,117.01);
+        System.out.println(d);
 
-        Point p = JTSUtils.getPoint(0,0,4326);
-
+        long a = 0;
+        long a1 = 1L<<62;
+        System.out.println(Long.toBinaryString(Long.MAX_VALUE));
+        System.out.println(Long.toBinaryString(a1));
 
     }
 

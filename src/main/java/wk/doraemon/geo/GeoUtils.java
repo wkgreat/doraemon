@@ -72,7 +72,7 @@ public class GeoUtils implements Serializable {
          * @return 从第一个点到第二个点的方位角
          * */
         public static double getAzimuth(double lon1, double lat1, double lon2, double lat2) {
-            return geodesicInverse(lat1, lon1, lat2, lon2).getAzimuth();
+            return geodesicInverse(lon1, lat1, lon2, lat2).getAzimuth();
         }
 
         /**
@@ -148,6 +148,11 @@ public class GeoUtils implements Serializable {
         }
 
 
+    }
+
+    public static void main(String[] args) {
+        double d = WGS84.getAzimuth(120.35265370674676, 31.59053999523161, 119.35186728533917,32.59062230870374);
+        System.out.println(d);
     }
 }
 
