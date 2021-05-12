@@ -3,8 +3,8 @@ package wk.doraemon.geo;
 import org.apache.commons.lang3.StringUtils;
 import org.locationtech.jts.algorithm.ConvexHull;
 import org.locationtech.jts.geom.*;
-import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.*;
+import org.locationtech.jts.util.GeometricShapeFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import wk.doraemon.collection.ListUtil;
@@ -374,4 +374,24 @@ public class JTSUtils implements Serializable {
         }
         return d;
     }
+
+    /**
+     * 圆（多边形）
+     * */
+    public static Polygon getCirclePolygon(double x, double y, double radius, int srid ,int numPoints) {
+        GeometricShapeFactory factory = new GeometricShapeFactory();
+        factory.setNumPoints(numPoints);
+        factory.setCentre(new Coordinate(x, y));
+        factory.setSize(radius*2);
+        Polygon circle = factory.createCircle();
+        circle.setSRID(srid);
+        return circle;
+    }
+
+    public static String getCircleWKT(double x, double y, double radius, int srid ,int numPoints) {
+        Polygon circle = getCirclePolygon(x, y, radius, srid, numPoints);
+        String wkt = geom2wkt(circle);
+        return wkt;
+    }
+
 }
